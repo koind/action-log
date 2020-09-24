@@ -10,7 +10,7 @@ RUN go mod download
 
 COPY . .
 
-RUN CGO_ENABLED=0 go build -o /opt/action-log
+RUN CGO_ENABLED=0 go build -o /opt/action-log ./cmd/action-log
 
 # Release
 FROM alpine:latest
