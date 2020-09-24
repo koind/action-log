@@ -8,7 +8,7 @@ import (
 // Интерфейс репозитория историй действий
 type HistoryRepositoryInterface interface {
 	// Добавляет новую историю действий
-	Add(ctx context.Context, rotation History) (*History, error)
+	Add(ctx context.Context, history History) (*History, error)
 
 	// Ищет истории действий по фильтрам
 	FindAllByFilter(ctx context.Context, filter SearchFilter) ([]*History, error)

@@ -19,13 +19,15 @@ func NewHistoryService(hr repository.HistoryRepositoryInterface) *HistoryService
 }
 
 // Добавляет новую историю действий
-func (s *HistoryService) Add(ctx context.Context, rotation repository.History) (*repository.History, error) {
-	newRotation, err := s.HistoryRepository.Add(ctx, rotation)
+func (s *HistoryService) Add(ctx context.Context, history repository.History) (*repository.History, error) {
+	history.SetDatetimeOfCreate()
+
+	newHistory, err := s.HistoryRepository.Add(ctx, history)
 	if err != nil {
 		return nil, errors.Wrap(err, "ошибка при добавлении истории действий")
 	}
 
-	return newRotation, nil
+	return newHistory, nil
 }
 
 // Ищет истории действий по фильтрам
