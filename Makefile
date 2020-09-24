@@ -21,8 +21,10 @@ rm:
 	docker rm $(docker ps -a -f status=exited -q)
 
 test:
+	set -e ;\
 	docker-compose -f docker-compose.test.yml up --build -d ;\
-	test_status=0 ;\
-	docker-compose -f docker-compose.test.yml run integration_tests go test -v ./... || test_status=$$? ;\
+	test_status_code=0 ;\
+	docker-compose -f docker-compose.test.yml run integration_tests go test -v ./... || test_status_code=$$? ;\
 	docker-compose -f docker-compose.test.yml down ;\
-	echo "status="$$test_status;exit $$test_status ;\
+	echo "test_status_code="$$test_status_code ;\
+	exit $$test_status_code ;\

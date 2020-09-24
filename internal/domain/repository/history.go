@@ -7,6 +7,9 @@ import (
 
 // Интерфейс репозитория историй действий
 type HistoryRepositoryInterface interface {
+	// Проверяет состояние базы
+	HealthCheck(ctx context.Context) error
+
 	// Добавляет новую историю действий
 	Add(ctx context.Context, history History) (*History, error)
 

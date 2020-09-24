@@ -24,6 +24,7 @@ func NewHTTPServer(historyService *service.HistoryService, domain string) *HTTPS
 	r := mux.NewRouter()
 	hs := HTTPServer{router: r, domain: domain, historyService: historyService}
 
+	r.HandleFunc("/health", hs.HealthCheckHandle).Methods("GET")
 	r.HandleFunc("/history", hs.AddHistoryHandle).Methods("POST")
 	r.HandleFunc("/histories", hs.GetHistoriesHandle).Methods("GET")
 
@@ -35,6 +36,19 @@ func NewHTTPServer(historyService *service.HistoryService, domain string) *HTTPS
 // Запускает HTTP сервер
 func (s *HTTPServer) Start() error {
 	return http.ListenAndServe(s.domain, s.router)
+}
+
+// Проверка состояние микросервиса
+func (s *HTTPServer) HealthCheckHandle(w http.ResponseWriter, r *http.Request) {
+	err := s.historyService.HistoryRepository.HealthCheck(r.Context())
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+	fmt.Fprintln(w, "OK")
 }
 
 // Добавляет новую историю действий

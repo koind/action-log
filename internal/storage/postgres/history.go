@@ -9,6 +9,7 @@ import (
 )
 
 const (
+	queryHealthCheck   = `SELECT 1;`
 	queryInsertHistory = `INSERT INTO histories(user_id, project, description, created_at)
 		VALUES ($1, $2, $3, $4) RETURNING id`
 	queryFindAllByFilter = `SELECT * FROM histories WHERE user_id=$1 AND project=$2`
@@ -24,6 +25,19 @@ func NewHistoryRepository(db *sqlx.DB) *HistoryRepository {
 	return &HistoryRepository{
 		DB: db,
 	}
+}
+
+// Проверяет состояние базы
+func (r *HistoryRepository) HealthCheck(ctx context.Context) error {
+	err := r.DB.PingContext(ctx)
+	if err != nil {
+		return err
+	}
+
+	var one int
+	err = r.DB.QueryRowContext(ctx, queryHealthCheck).Scan(&one)
+
+	return err
 }
 
 // Добавляет новую историю действий
