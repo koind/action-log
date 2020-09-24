@@ -1,0 +1,10 @@
+[HTTPServer]
+Host = "0.0.0.0"
+Port = 8080
+
+[Postgres]
+DSN = "postgres://app:123123@postgres:5432/histories?sslmode=disable"
+PingTimeout = 430
+MaxOpenConns = 10
+MaxIdleConns = 5
+ConnMaxLifetime = 15
