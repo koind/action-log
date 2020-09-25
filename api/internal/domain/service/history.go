@@ -30,11 +30,11 @@ func (s *HistoryService) Add(ctx context.Context, history repository.History) (*
 	return newHistory, nil
 }
 
-// Ищет истории действий по фильтрам
-func (s *HistoryService) FindAllByFilter(ctx context.Context, filter repository.SearchFilter) ([]*repository.History, error) {
-	list, err := s.HistoryRepository.FindAllByFilter(ctx, filter)
+// Возвращает все истории действий
+func (s *HistoryService) GetAll(ctx context.Context) ([]*repository.History, error) {
+	list, err := s.HistoryRepository.GetAll(ctx)
 	if err != nil {
-		return nil, errors.Wrap(err, "ошибка при поиске историй действий")
+		return nil, errors.Wrap(err, "ошибка при поиске всех действий")
 	}
 
 	return list, nil

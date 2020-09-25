@@ -12,7 +12,7 @@ const (
 	queryHealthCheck   = `SELECT 1;`
 	queryInsertHistory = `INSERT INTO histories(user_id, project, description, created_at)
 		VALUES ($1, $2, $3, $4) RETURNING id`
-	queryFindAllByFilter = `SELECT * FROM histories WHERE user_id=$1 AND project=$2`
+	queryFindAll = `SELECT * FROM histories`
 )
 
 // Postgres репозиторий историй действий
@@ -57,9 +57,9 @@ func (r *HistoryRepository) Add(ctx context.Context, history repository.History)
 	return &history, nil
 }
 
-// Ищет истории действий по фильтрам
-func (r *HistoryRepository) FindAllByFilter(ctx context.Context, filter repository.SearchFilter) ([]*repository.History, error) {
-	rows, err := r.DB.QueryxContext(ctx, queryFindAllByFilter, filter.UserID, filter.Project)
+// Возвращает все истории действий
+func (r *HistoryRepository) GetAll(ctx context.Context) ([]*repository.History, error) {
+	rows, err := r.DB.QueryxContext(ctx, queryFindAll)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return nil, nil

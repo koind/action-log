@@ -90,26 +90,7 @@ func (s *HTTPServer) AddHistoryHandle(w http.ResponseWriter, r *http.Request) {
 
 // Возвращает список действий
 func (s *HTTPServer) GetHistoriesHandle(w http.ResponseWriter, r *http.Request) {
-	filter := repository.SearchFilter{}
-
-	err := json.NewDecoder(r.Body).Decode(&filter)
-	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		fmt.Fprint(w, err)
-
-		return
-	}
-
-	validate := validator.New()
-	err = validate.StructCtx(r.Context(), filter)
-	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		fmt.Fprint(w, err)
-
-		return
-	}
-
-	list, err := s.historyService.FindAllByFilter(r.Context(), filter)
+	list, err := s.historyService.GetAll(r.Context())
 	if err != nil {
 		fmt.Fprint(w, err)
 

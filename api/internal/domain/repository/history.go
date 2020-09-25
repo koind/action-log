@@ -13,8 +13,8 @@ type HistoryRepositoryInterface interface {
 	// Добавляет новую историю действий
 	Add(ctx context.Context, history History) (*History, error)
 
-	// Ищет истории действий по фильтрам
-	FindAllByFilter(ctx context.Context, filter SearchFilter) ([]*History, error)
+	// Возвращает все истории действий
+	GetAll(ctx context.Context) ([]*History, error)
 }
 
 // Сущность истории действий
@@ -29,10 +29,4 @@ type History struct {
 // Установить дату и время создания
 func (r *History) SetDatetimeOfCreate() {
 	r.CreatedAt = time.Now().UTC()
-}
-
-// Фильтр для поиска историй
-type SearchFilter struct {
-	UserID  int    `json:"userId" validate:"required"`  // Id пользователя
-	Project string `json:"project" validate:"required"` // Название проекта
 }
