@@ -117,16 +117,36 @@ func (t *TestData) StepDefinitioninition6(body *godog.DocString) error {
 	var expected, actual []HistoryResponse
 
 	if err := json.Unmarshal([]byte(cleanJson), &actual); err != nil {
-		return err
+		return fmt.Errorf("ошибка преобразования, %v ", err)
 	}
 
-	if err := json.Unmarshal([]byte(t.responseJson), &expected); err != nil {
-		return err
+	if err := json.Unmarshal(t.responseBody, &expected); err != nil {
+		return fmt.Errorf("ошибка преобразования, %v  ", err)
 	}
 
 	if !reflect.DeepEqual(expected, actual) {
 		return fmt.Errorf("структуры должны совпадать, %v vs. %v", expected, actual)
 	}
+
+	return nil
+}
+
+func (t *TestData) StepDefinitioninition7(httpMethod, url string) error {
+	client := &http.Client{}
+
+	req, err := http.NewRequest(httpMethod, url, nil)
+	if err != nil {
+		return err
+	}
+
+	resp, err := client.Do(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	t.responseStatusCode = resp.StatusCode
+	t.responseBody, err = ioutil.ReadAll(resp.Body)
 
 	return nil
 }
@@ -142,10 +162,6 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	ctx.Step(`^Код ответа должен быть (\d+)$`, test.StepDefinitioninition2)
 	ctx.Step(`^В ответ должен получить следующие данные:$`, test.StepDefinitioninition5)
 
-	ctx.Step(`^3. Я отправляю "([^"]*)" запрос на "([^"]*)" с заголовком "([^"]*)" и данными:$`, test.StepDefinitioninition4)
-	ctx.Step(`^Код ответа должен быть (\d+)$`, test.StepDefinitioninition2)
-
-	ctx.Step(`^4. Я отправляю "([^"]*)" запрос на "([^"]*)" с заголовком "([^"]*)" и данными:$`, test.StepDefinitioninition4)
-	ctx.Step(`^Код ответа должен быть (\d+)$`, test.StepDefinitioninition2)
+	ctx.Step(`^3. Я отправляю "([^"]*)" запрос на "([^"]*)"$`, test.StepDefinitioninition7)
 	ctx.Step(`^В ответе должен получить следующий список:$`, test.StepDefinitioninition6)
 }
