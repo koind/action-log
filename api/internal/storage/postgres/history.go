@@ -4,7 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"github.com/jmoiron/sqlx"
-	"github.com/koind/action-log/internal/domain/repository"
+	"github.com/koind/action-log/api/internal/domain/repository"
 	"github.com/pkg/errors"
 )
 

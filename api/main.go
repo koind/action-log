@@ -2,10 +2,10 @@ package main
 
 import (
 	"context"
-	"github.com/koind/action-log/internal/config"
-	"github.com/koind/action-log/internal/domain/service"
-	"github.com/koind/action-log/internal/handler"
-	"github.com/koind/action-log/internal/storage/postgres"
+	"github.com/koind/action-log/api/internal/config"
+	"github.com/koind/action-log/api/internal/domain/service"
+	"github.com/koind/action-log/api/internal/handler"
+	"github.com/koind/action-log/api/internal/storage/postgres"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/pflag"
 	"log"

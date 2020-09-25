@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"github.com/go-playground/validator/v10"
 	"github.com/gorilla/mux"
-	"github.com/koind/action-log/internal/domain/repository"
-	"github.com/koind/action-log/internal/domain/service"
+	"github.com/koind/action-log/api/internal/domain/repository"
+	"github.com/koind/action-log/api/internal/domain/service"
 	"net/http"
 )
 
@@ -79,6 +79,7 @@ func (s *HTTPServer) AddHistoryHandle(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	w.Header().Set("Content-Type", "application/json")
 	err = json.NewEncoder(w).Encode(newHistory)
 	if err != nil {
 		fmt.Fprint(w, err)
@@ -115,6 +116,7 @@ func (s *HTTPServer) GetHistoriesHandle(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
+	w.Header().Set("Content-Type", "application/json")
 	err = json.NewEncoder(w).Encode(list)
 	if err != nil {
 		fmt.Fprint(w, err)

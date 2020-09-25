@@ -8,7 +8,7 @@ services:
   api:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: ./api/Dockerfile
     depends_on:
       - postgres
     environment:

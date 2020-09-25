@@ -2,7 +2,7 @@ package service
 
 import (
 	"context"
-	"github.com/koind/action-log/internal/domain/repository"
+	"github.com/koind/action-log/api/internal/domain/repository"
 	"github.com/pkg/errors"
 )
 
