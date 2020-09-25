@@ -32,6 +32,6 @@ services:
       POSTGRES_PASSWORD: 123123
       POSTGRES_DB: histories
     volumes:
-      - ./config/production/db-setup.sql:/docker-entrypoint-initdb.d/setup.sql
+      - ./api/config/production/db-setup.sql:/docker-entrypoint-initdb.d/setup.sql
     networks:
       - db
